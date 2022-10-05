@@ -24,9 +24,9 @@ stages:
 # BUILD STAGE
 #--------------------------------------------#    
 - stage: Build
-#   jobs:
-#   - job: BuildInfrastructure
-#     steps:
+  jobs:
+  - job: BuildInfrastructure
+    steps:
 #     #--------------------------------------------#  
 #     # Use Terraform to create the Infrastructure      
 #     # Install Terraform on the pipeline agent 
