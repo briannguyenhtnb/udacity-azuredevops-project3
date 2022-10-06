@@ -191,7 +191,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App'
             inputs:
-              azureSubscription: 20bf5e1b-b80b-4e18-882d-3933acf11704
+              azureSubscription: '20bf5e1b-b80b-4e18-882d-3933acf11704'
               appName: udacity-azuredevops-fakerestapi
               appType: webApp
               package: '$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip'     # ToDo: Use the published zip artifact. 
