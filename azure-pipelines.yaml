@@ -62,42 +62,7 @@ stages:
     # ToDo: Change the inputs value below
     - task: InstallSSHKey@0
       inputs:
-        knownHostsEntry: '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
-        X7qIy8oM+FEoJLAAAACmh0bmI4QEhUTkI=' # variable value
+        knownHostsEntry: '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' # variable value
         sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpU8He6o8yd6cBKEtoFkgGxgqxIy5abDrtUke+3VJYRu45iK1qIVzL5hH6SaucUbGSKpJeke5p15vfLFKpno9iXowTQGuDBWLw73p49c0E8M+mRjrPAlwGCAlIBF1Wbl5WiaBj1BH15J9FLV93qCs7XlDOVRDhz9ibtQAPzfQEcH8XKjiQaBgKmYKfc1kZ6xSwIg5SxZ0XMPYlY6r7YLsNVx+R+1lqcpB9Q0S8uayl+ewbcizoRJTWJ9z3lbA39PSLqOb+nJ0FyX5HsEnzgWwfyWHyCv88hRuFTpU2yVS8PYYxOincq6/yaz3yqqBG62lON5Z7jbbG9sqCoquMgdVY0g0N9huXscb/whjNbYFrI9OBQHtqWOnqb8N7650y8GVn4ir71J5VTCPlBcx5tE1lz3UexSxj5vmtqUdf1rk0z8JG+h9LktVzHhUF3n0vmn4ctdtpJy4m75+HsVzGpsD8obk/yOBVCktDC+OTe8wZRn3MmgXoJxp3oNBzyd5NtmE= htnb8@HTNB        '            # variable value
         sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
     
