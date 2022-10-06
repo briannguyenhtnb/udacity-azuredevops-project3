@@ -23,10 +23,10 @@ stages:
 #--------------------------------------------#  
 # BUILD STAGE
 #--------------------------------------------#    
-# - stage: Build
-#   jobs:
-#   - job: BuildInfrastructure
-#     steps:
+- stage: Build
+  jobs:
+  - job: BuildInfrastructure
+    steps:
 #     #--------------------------------------------#  
 #     # Use Terraform to create the Infrastructure      
 #     # Install Terraform on the pipeline agent 
@@ -96,10 +96,6 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
-- stage: Test
-  jobs:
-  - job: IntegrationTest
-    steps:
     - task: CmdLine@2
       displayName: Install Newman
       inputs:
@@ -121,8 +117,8 @@ stages:
       inputs:
         script: 'newman run Regression_Test.postman_collection.json -e Environment.postman_environment.json --bail newman -x --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml'
         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-#     # Postman - Publish Results 
-#     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+    # Postman - Publish Results 
+    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit'
@@ -131,60 +127,39 @@ stages:
         mergeTestResults: true
         testRunTitle: Publish Test Results
 
-#     #--------------------------------------------#
-#     # Selenium (UI) Test Suite - Archive the package  
-#     # "ArchiveFiles@2" picks up the web package and archives it.
-#     - task: ArchiveFiles@2
-#       displayName: 'Archive UI Tests'
-#       inputs:
-#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-#         includeRootFolder: false
-#         archiveType: 'zip'
-#         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
-#     # Selenium Test Suite - Publish the package  
-#     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
-#       displayName: 'Upload Package'
-#       artifact: drop-uitests
+    #--------------------------------------------#
+    # Selenium (UI) Test Suite - Archive the package  
+    # "ArchiveFiles@2" picks up the web package and archives it.
+    - task: ArchiveFiles@2
+      displayName: 'Archive UI Tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    # Selenium Test Suite - Publish the package  
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+      displayName: 'Upload Package'
+      artifact: drop-uitests
 
-#     #--------------------------------------------#    
-#     # FakeRestAPI - Archive
-#     # ToDo: Complete the ArchiveFiles@2 task and publish step 
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive FakeRestAPI'
-    #   inputs:
-    #     rootFolderOrFile: 
-    #     includeRootFolder:
-    #     archiveType: 
-    #     archiveFile: 
-    # # FakeRestAPI - Publish    
-    # - publish: 
-    #   displayName: 
-    #   artifact: 
+    #--------------------------------------------#    
+    # FakeRestAPI - Archive
+    # ToDo: Complete the ArchiveFiles@2 task and publish step 
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+    # FakeRestAPI - Publish    
+    - publish: 
+      displayName: Publish fakerestapi package
+      artifact: drop-fakerestapi
 
     #--------------------------------------------#  
     # JMeter (Performance) Test Suite - Archive
     # ToDo: Complete the ArchiveFiles@2 task and publish step 
-  - job: PerformanceTests
-    pool:
-      vmImage: 'ubuntu-18.04'
-    steps:
-    - bash: |
-        sudo apt-get install openjdk-11-jre-headless -y
-        java -version
-        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
-        tar xzvf jmeter.tgz
-        apache-jmeter-5.5/bin/jmeter --version
-        # create log directory
-        mkdir -p log/jmeter
-        pwd
-        ls -la
-      displayName: Install JMeter
-    - bash: |
-        apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTestSuite.jmx \
-                                   -l log/jmeter/endurance-test-result.csv \
-                                   -e -f -o log/jmeter/endurance-test-html-report \
-                                   -j log/jmeter/jmeter-endurance-test.log
-      displayName: JMeter endurance test
     - task: ArchiveFiles@2
       displayName: 'Archive PerformanceTestSuite'
       inputs:
