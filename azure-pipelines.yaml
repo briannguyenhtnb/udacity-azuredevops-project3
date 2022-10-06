@@ -194,7 +194,7 @@ stages:
               azureSubscription: '$(azureServiceConnectionId)'
               appName: udacity-azuredevops-fakerestapi
               appType: webApp
-              package: '$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip'     # ToDo: Use the published zip artifact. 
+              package: '$(System.DefaultWorkingDirectory)/fakerestapi/fakerestapi-$(Build.BuildId).zip'     # ToDo: Use the published zip artifact. 
           #--------------------------------------------#    
 #           # Run JMeter test suite against the App Service
 #           # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
