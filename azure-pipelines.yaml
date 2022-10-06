@@ -169,7 +169,7 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/jmeter-$(Build.BuildId).zip'
     # JMeter Test Suite - Publish    
-    - publish: 
+    - publish: '$(Build.ArtifactStagingDirectory)/jmeter-$(Build.BuildId).zip'
       displayName: Publish JMeter
       artifact: 'drop-jmeter-tests'
 
@@ -209,47 +209,47 @@ stages:
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
   # ToDo: 
-  # - deployment: VMDeploy
-  #   displayName: Selenium Tests
-  #   environment:
-  #     name: 'TEST'
-  #     resourceType: VirtualMachine
-  #     tags: selenium
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - download: current
-  #           artifact: drop-ui-tests     # ToDo: Change/provide a name
+  - deployment: VMDeploy
+    displayName: Selenium Tests
+    environment:
+      name: 'TEST'
+      resourceType: VirtualMachine
+      tags: selenium
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-ui-tests     # ToDo: Change/provide a name
             
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |           
-  #               # ToDo: Install Selenium, Chromium-browser & Chromedriver, if not already in the custom VM image. 
-  #               #! /bin/bash
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |           
+                # ToDo: Install Selenium, Chromium-browser & Chromedriver, if not already in the custom VM image. 
+                #! /bin/bash
                 
-  #               sudo apt-get upgrade -y
-  #               sudo apt-get install python3-pip -y
-  #               sudo apt-get install unzip -y
-  #               sudo apt-get install -y chromium-browser
-  #               pip3 install selenium
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
                 
-  #               #  ToDo: Add chromedriver executable to path
-  #               # export PATH=$PATH:/path/to/chromedriver     
+                #  ToDo: Add chromedriver executable to path
+                # export PATH=$PATH:/path/to/chromedriver     
                 
-  #               # ToDo: Write commands for deploying the UI Test Suite (published zip artifact) to the linux VM and execute the Test Suite
-  #               # ToDo: Direct the output of the Selenium Test Suite to a log file
+                # ToDo: Write commands for deploying the UI Test Suite (published zip artifact) to the linux VM and execute the Test Suite
+                # ToDo: Direct the output of the Selenium Test Suite to a log file
 
-  #               unzip -o $(Pipeline.Workspace)/selenium/selenium-tests.zip -d .
-  #               sudo mkdir -p /var/log/selenium
-  #               sudo chmod 664 /var/log/selenium
+                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
+                sudo mkdir -p /var/log/selenium
+                sudo chmod 664 /var/log/selenium
                 
-  #               sudo python3 -u uitests.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
-  #               # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
-  #               cd $(System.DefaultWorkingDirectory)
-  #               mkdir -p log/selenium
-  #               pwd
-  #               sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
-  #               ls -la
+                sudo python3 -u login.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+                # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
+                cd $(System.DefaultWorkingDirectory)
+                mkdir -p log/selenium
+                pwd
+                sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+                ls -la
                 
