@@ -151,7 +151,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi/fakerestapi-$(Build.BuildId).zip'
     # FakeRestAPI - Publish    
     - publish: 
       displayName: Publish fakerestapi package
@@ -175,27 +175,27 @@ stages:
 # #--------------------------------------------#  
 # # DEPLOYMENT STAGE
 # #--------------------------------------------#    
-# - stage: Deploy
-#   jobs:
-#   #--------------------------------------------#  
-#   # Deploy FakeRestAPI Web App
-#   # ToDo: Provide <environment name> you created in your DevOps project
-#   - deployment: FakeRestAPI
-#     pool:
-#       vmImage: 'Ubuntu-18.04'      
-#     environment: <environment name>   # ToDo
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App'
-#             inputs:
-#               azureSubscription:      # ToDo
-#               appName:                # ToDo
-#               appType: webApp
-#               package: $(Pipeline.Workspace)/<artifact>/<archiveFile>       # ToDo: Use the published zip artifact. 
-#           #--------------------------------------------#    
+- stage: Deploy
+  jobs:
+  #--------------------------------------------#  
+  # Deploy FakeRestAPI Web App
+  # ToDo: Provide <environment name> you created in your DevOps project
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-18.04'      
+    environment: <environment name>   # ToDo
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: 20bf5e1b-b80b-4e18-882d-3933acf11704
+              appName: udacity-azuredevops-fakerestapi
+              appType: webApp
+              package: '$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip'     # ToDo: Use the published zip artifact. 
+          #--------------------------------------------#    
 #           # Run JMeter test suite against the App Service
 #           # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
 #           # ToDo: Generate the log file. 
