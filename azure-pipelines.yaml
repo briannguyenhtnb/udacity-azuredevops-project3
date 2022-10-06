@@ -10,14 +10,14 @@ trigger:
 # Otherwise, comment out the line below. 
 # pool: myAgentPool
 
-# variables:
-#   python.version: '3.7.6'
-#   # ToDo: Replace the service connection name as used in the DevOps project settings
-#   azureServiceConnectionId: 'myServiceConnection'
-#   # Project root folder. Point to the folder containing manage.py file.
-#   projectRoot: $(System.DefaultWorkingDirectory)
-#   # Environment name
-#   environmentName: 'test'
+variables:
+  python.version: '3.7.6'
+  # ToDo: Replace the service connection name as used in the DevOps project settings
+  azureServiceConnectionId: 'myServiceConnection'
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+  # Environment name
+  environmentName: 'test'
 
 stages:
 #--------------------------------------------#  
@@ -163,14 +163,14 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive PerformanceTestSuite'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report-$(Build.BuildId).zip'
+        archiveFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter-$(Build.BuildId).zip'
     # JMeter Test Suite - Publish    
     - publish: 
-      displayName: Publish JMeter logs
-      artifact: 'drop-jmeter-logs'
+      displayName: Publish JMeter
+      artifact: 'drop-jmeter-tests'
 
 # #--------------------------------------------#  
 # # DEPLOYMENT STAGE
