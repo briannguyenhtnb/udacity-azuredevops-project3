@@ -13,7 +13,7 @@ trigger:
 variables:
   python.version: '3.7.6'
   # ToDo: Replace the service connection name as used in the DevOps project settings
-  azureServiceConnectionId: 'myServiceConnection'
+  azureServiceConnectionId: 'htnb831_service_connection'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
@@ -191,7 +191,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Deploy Azure Web App'
             inputs:
-              azureSubscription: '20bf5e1b-b80b-4e18-882d-3933acf11704'
+              azureSubscription: '$(azureServiceConnectionId)'
               appName: udacity-azuredevops-fakerestapi
               appType: webApp
               package: '$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip'     # ToDo: Use the published zip artifact. 
