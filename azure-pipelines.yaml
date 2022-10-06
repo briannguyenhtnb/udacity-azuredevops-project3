@@ -200,11 +200,11 @@ stages:
 #           # Run JMeter test suite against the App Service
 #           # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
 #           # ToDo: Generate the log file. 
-#           - task: CmdLine@2
-#             inputs:
-#               script: |
-#                                                                             # ToDo: Write your commands
-#               workingDirectory: $(Pipeline.Workspace)/<artifact>            # ToDo: Use the artifact name from the task above
+          - task: CmdLine@2
+            inputs:
+              script: |
+                                                                            # ToDo: Write your commands
+              workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip           # ToDo: Use the artifact name from the task above
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
@@ -220,7 +220,7 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop-ui-tests     # ToDo: Change/provide a name
+            artifact: drop-uitests     # ToDo: Change/provide a name
             
           - task: Bash@3
             inputs:
