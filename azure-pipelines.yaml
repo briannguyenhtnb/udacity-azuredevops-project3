@@ -152,6 +152,7 @@ stages:
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
+        verbose: true
     # FakeRestAPI - Publish    
     - publish: 
       displayName: Publish fakerestapi package
