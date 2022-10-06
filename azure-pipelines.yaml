@@ -154,7 +154,7 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip'
         verbose: true
     # FakeRestAPI - Publish    
-    - publish: 
+    - publish: $(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip
       displayName: Publish fakerestapi package
       artifact: drop-fakerestapi
 
@@ -167,7 +167,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(System.DefaultWorkingDirectory)/jmeter-$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/jmeter-$(Build.BuildId).zip'
     # JMeter Test Suite - Publish    
     - publish: 
       displayName: Publish JMeter
