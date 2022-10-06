@@ -96,6 +96,10 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
+- stage: Test
+  jobs:
+  - job: IntegrationTest
+    steps:
     - task: CmdLine@2
       displayName: Install Newman
       inputs:
@@ -145,32 +149,54 @@ stages:
 #     #--------------------------------------------#    
 #     # FakeRestAPI - Archive
 #     # ToDo: Complete the ArchiveFiles@2 task and publish step 
-#     - task: ArchiveFiles@2
-#       displayName: 'Archive FakeRestAPI'
-#       inputs:
-#         rootFolderOrFile: 
-#         includeRootFolder:
-#         archiveType: 
-#         archiveFile: 
-#     # FakeRestAPI - Publish    
-#     - publish: 
-#       displayName: 
-#       artifact: 
+    # - task: ArchiveFiles@2
+    #   displayName: 'Archive FakeRestAPI'
+    #   inputs:
+    #     rootFolderOrFile: 
+    #     includeRootFolder:
+    #     archiveType: 
+    #     archiveFile: 
+    # # FakeRestAPI - Publish    
+    # - publish: 
+    #   displayName: 
+    #   artifact: 
 
-#     #--------------------------------------------#  
-#     # JMeter (Performance) Test Suite - Archive
-#     # ToDo: Complete the ArchiveFiles@2 task and publish step 
-#     - task: ArchiveFiles@2
-#       displayName: 'Archive PerformanceTestSuite'
-#       inputs:
-#         rootFolderOrFile: 
-#         includeRootFolder:
-#         archiveType: 
-#         archiveFile: 
-#     # JMeter Test Suite - Publish    
-#     - publish: 
-#       displayName: 
-#       artifact: 
+    #--------------------------------------------#  
+    # JMeter (Performance) Test Suite - Archive
+    # ToDo: Complete the ArchiveFiles@2 task and publish step 
+  - job: PerformanceTests
+    displayName: JMeter Tests
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+    - bash: |
+        sudo apt-get install openjdk-11-jre-headless -y
+        java -version
+        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+        tar xzvf jmeter.tgz
+        apache-jmeter-5.5/bin/jmeter --version
+        # create log directory
+        mkdir -p log/jmeter
+        pwd
+        ls -la
+      displayName: Install JMeter
+    - bash: |
+        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTestSuite.jmx \
+                                   -l log/jmeter/endurance-test-result.csv \
+                                   -e -f -o log/jmeter/endurance-test-html-report \
+                                   -j log/jmeter/jmeter-endurance-test.log
+      displayName: JMeter endurance test
+    - task: ArchiveFiles@2
+      displayName: 'Archive PerformanceTestSuite'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report-$(Build.BuildId).zip'
+    # JMeter Test Suite - Publish    
+    - publish: 
+      displayName: Publish JMeter logs
+      artifact: 'drop-jmeter-logs'
 
 # #--------------------------------------------#  
 # # DEPLOYMENT STAGE
