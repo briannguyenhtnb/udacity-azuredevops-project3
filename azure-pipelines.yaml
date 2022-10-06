@@ -209,7 +209,7 @@ stages:
                 wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
                 tar xzvf jmeter.tgz
                 apache-jmeter-5.5/bin/jmeter --version
-                # create log directory
+
                 mkdir -p log/jmeter
 
                 unzip -o $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip -d .
@@ -240,27 +240,17 @@ stages:
             inputs:
               targetType: 'inline'
               script: |           
-                # ToDo: Install Selenium, Chromium-browser & Chromedriver, if not already in the custom VM image. 
-                #! /bin/bash
-                
                 sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
                 pip3 install selenium
-                
-                #  ToDo: Add chromedriver executable to path
-                # export PATH=$PATH:/path/to/chromedriver     
-                
-                # ToDo: Write commands for deploying the UI Test Suite (published zip artifact) to the linux VM and execute the Test Suite
-                # ToDo: Direct the output of the Selenium Test Suite to a log file
 
                 unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
                 
                 sudo python3 -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
-                # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
                 pwd
