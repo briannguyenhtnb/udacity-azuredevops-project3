@@ -61,4 +61,5 @@ module "vm" {
   resource_type   = "vm"
   public_ip       = "${module.publicip.public_ip_address_id}"
   admin_username  = "${var.admin_username}"
+  public_key_path = "${var.public_key_path}"
 }
