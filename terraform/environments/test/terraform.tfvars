@@ -17,3 +17,4 @@ address_prefix_test = "10.5.1.0/24"
 # VM
 vm_name = "udacity-project3-vm"
 admin_username = "brianhtnb"
+public_key_path = "~/.ssh/authorized_keys/id_rsa.pub"
