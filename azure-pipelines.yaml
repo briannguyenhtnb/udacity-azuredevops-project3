@@ -200,25 +200,25 @@ stages:
 #           # Run JMeter test suite against the App Service
 #           # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
 #           # ToDo: Generate the log file. 
-          # - task: Bash@3
-          #   displayName: 'Performance Test with JMeter'
-          #   inputs:
-          #     script: |
-          #       sudo apt-get install openjdk-11-jre-headless -y
-          #       java -version
-          #       wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
-          #       tar xzvf jmeter.tgz
-          #       apache-jmeter-5.5/bin/jmeter --version
+          - task: Bash@3
+            displayName: 'Performance Test with JMeter'
+            inputs:
+              script: |
+                sudo apt-get install openjdk-11-jre-headless -y
+                java -version
+                wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+                tar xzvf jmeter.tgz
+                apache-jmeter-5.5/bin/jmeter --version
 
-          #       mkdir -p log/jmeter
+                mkdir -p log/jmeter
 
-          #       unzip -o $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip -d .
+                unzip -o $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip -d .
 
-          #       apache-jmeter-5.5/bin/jmeter -n -t EnduranceTestSuite.jmx \
-          #                          -l log/jmeter/endurance-test-result.csv \
-          #                          -e -f -o log/jmeter/endurance-test-html-report \
-          #                          -j log/jmeter/jmeter-endurance-test.log
-          #     workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip           # ToDo: Use the artifact name from the task above
+                apache-jmeter-5.5/bin/jmeter -n -t EnduranceTestSuite.jmx \
+                                   -l log/jmeter/endurance-test-result.csv \
+                                   -e -f -o log/jmeter/endurance-test-html-report \
+                                   -j log/jmeter/jmeter-endurance-test.log
+              workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip           # ToDo: Use the artifact name from the task above
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
