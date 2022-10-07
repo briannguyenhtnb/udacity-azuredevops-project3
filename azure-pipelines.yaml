@@ -30,68 +30,67 @@ stages:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
-    # - task: TerraformInstaller@0
-    #   displayName: 'Terrafom installation'
-    #   inputs:
-    #     terraformVersion: '1.2.9'
+    - task: TerraformInstaller@0
+      displayName: 'Terrafom installation'
+      inputs:
+        terraformVersion: '1.2.9'
     
-    # # Run Terraform Init on the pipeline agent 
-    # # ToDo: Replace the resource group name, storage account name, and container name below
-    # - task: TerraformTaskV3@3
-    #   displayName: 'Terrafom init'
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'init'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     backendServiceArm: '$(azureServiceConnectionId)'
-    #     backendAzureRmResourceGroupName: 'tfstate'
-    #     backendAzureRmStorageAccountName: 'tfstate1709'
-    #     backendAzureRmContainerName: 'tfstate'
-    #     backendAzureRmKey: 'terraform.tfstate'
+    # Run Terraform Init on the pipeline agent 
+    # ToDo: Replace the resource group name, storage account name, and container name below
+    - task: TerraformTaskV3@3
+      displayName: 'Terrafom init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'tfstate'
+        backendAzureRmStorageAccountName: 'tfstate1709'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'terraform.tfstate'
 
-    # # ToDo: Run Terraform Validate    
-    # - task: TerraformTaskV3@3
-    #   displayName: Terraform validate
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'validate'
+    # ToDo: Run Terraform Validate    
+    - task: TerraformTaskV3@3
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
 
-    # # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
-    # # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
-    # # Install public key and private key file to the pipeline agent, using the task below. 
-    # # ToDo: Change the inputs value below
-    # - task: InstallSSHKey@0
-    #   inputs:
-    #     knownHostsEntry: 'htnb' # variable value
-    #     sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpU8He6o8yd6cBKEtoFkgGxgqxIy5abDrtUke+3VJYRu45iK1qIVzL5hH6SaucUbGSKpJeke5p15vfLFKpno9iXowTQGuDBWLw73p49c0E8M+mRjrPAlwGCAlIBF1Wbl5WiaBj1BH15J9FLV93qCs7XlDOVRDhz9ibtQAPzfQEcH8XKjiQaBgKmYKfc1kZ6xSwIg5SxZ0XMPYlY6r7YLsNVx+R+1lqcpB9Q0S8uayl+ewbcizoRJTWJ9z3lbA39PSLqOb+nJ0FyX5HsEnzgWwfyWHyCv88hRuFTpU2yVS8PYYxOincq6/yaz3yqqBG62lON5Z7jbbG9sqCoquMgdVY0g0N9huXscb/whjNbYFrI9OBQHtqWOnqb8N7650y8GVn4ir71J5VTCPlBcx5tE1lz3UexSxj5vmtqUdf1rk0z8JG+h9LktVzHhUF3n0vmn4ctdtpJy4m75+HsVzGpsD8obk/yOBVCktDC+OTe8wZRn3MmgXoJxp3oNBzyd5NtmE= htnb8@HTNB        '            # variable value
-    #     sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
+    # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
+    # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
+    # Install public key and private key file to the pipeline agent, using the task below. 
+    # ToDo: Change the inputs value below
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: 'htnb' # variable value
+        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDpU8He6o8yd6cBKEtoFkgGxgqxIy5abDrtUke+3VJYRu45iK1qIVzL5hH6SaucUbGSKpJeke5p15vfLFKpno9iXowTQGuDBWLw73p49c0E8M+mRjrPAlwGCAlIBF1Wbl5WiaBj1BH15J9FLV93qCs7XlDOVRDhz9ibtQAPzfQEcH8XKjiQaBgKmYKfc1kZ6xSwIg5SxZ0XMPYlY6r7YLsNVx+R+1lqcpB9Q0S8uayl+ewbcizoRJTWJ9z3lbA39PSLqOb+nJ0FyX5HsEnzgWwfyWHyCv88hRuFTpU2yVS8PYYxOincq6/yaz3yqqBG62lON5Z7jbbG9sqCoquMgdVY0g0N9huXscb/whjNbYFrI9OBQHtqWOnqb8N7650y8GVn4ir71J5VTCPlBcx5tE1lz3UexSxj5vmtqUdf1rk0z8JG+h9LktVzHhUF3n0vmn4ctdtpJy4m75+HsVzGpsD8obk/yOBVCktDC+OTe8wZRn3MmgXoJxp3oNBzyd5NtmE= htnb8@HTNB        '            # variable value
+        sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
     
-    # - task: DownloadSecureFile@1
-    #   name: udacity_public_key
-    #   displayName: 
-    #   inputs:
-    #     secureFile: "id_rsa.pub"
-
+    - task: DownloadSecureFile@1
+      name: udacity_public_key
+      displayName: 
+      inputs:
+        secureFile: "id_rsa.pub"
     
-    # # Run Terraform Apply
-    # # ToDo: Change the workingDirectory path, as applicable to you
-    # - task: TerraformTaskV3@3
-    #   displayName: Terraform apply
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'apply'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    # Run Terraform Apply
+    # ToDo: Change the workingDirectory path, as applicable to you
+    - task: TerraformTaskV3@3
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
-    # # ToDo: Change the workingDirectory path, as applicable to you
-    # # Destroy the resources in Azure by running a separate pipeline. 
-    # - task: TerraformTaskV3@3
-    #   displayName: Terraform destroy
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'destroy'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    # ToDo: Change the workingDirectory path, as applicable to you
+    # Destroy the resources in Azure by running a separate pipeline. 
+    - task: TerraformTaskV3@3
+      displayName: Terraform destroy
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
 #--------------------------------------------#    
     # Postman - Install Newman    
@@ -161,17 +160,39 @@ stages:
     #--------------------------------------------#  
     # JMeter (Performance) Test Suite - Archive
     # ToDo: Complete the ArchiveFiles@2 task and publish step 
+  - job: PerformanceTests
+    pool:
+      vmImage: 'ubuntu-18.04'
+    steps:
+    - bash: |
+        sudo apt-get install openjdk-11-jre-headless -y
+        java -version
+        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+        tar xzvf jmeter.tgz
+        apache-jmeter-5.5/bin/jmeter --version
+        # create log directory
+        mkdir -p log/jmeter
+        pwd
+        ls -la
+      displayName: Install JMeter
+    - bash: |
+        apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTestSuite.jmx \
+                                   -l log/jmeter/test-result.csv \
+                                   -e -f -o log/jmeter/test-html-report \
+                                   -j log/jmeter/jmeter-test.log
+      displayName: JMeter test
     - task: ArchiveFiles@2
       displayName: 'Archive PerformanceTestSuite'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/test-html-report'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/jmeter-$(Build.BuildId).zip'
+        archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/test-html-report-$(Build.BuildId).zip'
     # JMeter Test Suite - Publish    
-    - publish: '$(Build.ArtifactStagingDirectory)/jmeter-$(Build.BuildId).zip'
-      displayName: Publish JMeter
-      artifact: 'drop-jmeter-tests'
+    - publish: 
+      displayName: Publish JMeter tests
+      artifact: 'drop-jmeter-tests'  
+    
 
 # #--------------------------------------------#  
 # # DEPLOYMENT STAGE
@@ -196,64 +217,41 @@ stages:
               appName: udacity-azuredevops-fakerestapi
               appType: webApp
               package: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'   # ToDo: Use the published zip artifact. 
-          #--------------------------------------------#    
-          # Run JMeter test suite against the App Service
-          # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
-          # ToDo: Generate the log file. 
-          - task: Bash@3
-            displayName: 'Performance Test with JMeter'
-            inputs:
-              script: |
-                sudo apt-get install openjdk-11-jre-headless -y
-                java -version
-                wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
-                tar xzvf jmeter.tgz
-                apache-jmeter-5.5/bin/jmeter --version
-
-                mkdir -p log/jmeter
-
-                unzip -o $(Pipeline.Workspace)/drop-jmeter-tests/jmeter-$(Build.BuildId).zip -d .
-
-                apache-jmeter-5.5/bin/jmeter -n -t EnduranceTestSuite.jmx \
-                                   -l log/jmeter/endurance-test-result.csv \
-                                   -e -f -o log/jmeter/endurance-test-html-report \
-                                   -j log/jmeter/jmeter-endurance-test.log
-              # workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests        # ToDo: Use the artifact name from the task above
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
   # ToDo: 
-  # - deployment: VMDeploy
-  #   displayName: Selenium Tests
-  #   environment:
-  #     name: 'TEST'
-  #     resourceType: VirtualMachine
-  #     tags: selenium
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - download: current
-  #           artifact: drop-uitests     # ToDo: Change/provide a name
+  - deployment: VMDeploy
+    displayName: Selenium Tests
+    environment:
+      name: 'TEST'
+      resourceType: VirtualMachine
+      tags: selenium
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-uitests     # ToDo: Change/provide a name
             
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |           
-  #               # sudo apt-get upgrade -y
-  #               # sudo apt-get install python3-pip -y
-  #               # sudo apt-get install unzip -y
-  #               # sudo apt-get install -y chromium-browser
-  #               # pip3 install selenium
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |           
+                # sudo apt-get upgrade -y
+                # sudo apt-get install python3-pip -y
+                # sudo apt-get install unzip -y
+                # sudo apt-get install -y chromium-browser
+                # pip3 install selenium
 
-  #               unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
-  #               sudo mkdir -p /var/log/selenium
-  #               sudo chmod 664 /var/log/selenium
-  #               source ~/.selenium-venv/bin/activate
-  #               python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
-  #               cd $(System.DefaultWorkingDirectory)
-  #               mkdir -p log/selenium
-  #               pwd
-  #               sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
-  #               ls -la
+                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
+                sudo mkdir -p /var/log/selenium
+                sudo chmod 664 /var/log/selenium
+                source ~/.selenium-venv/bin/activate
+                python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
+                cd $(System.DefaultWorkingDirectory)
+                mkdir -p log/selenium
+                pwd
+                sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+                ls -la
                 
