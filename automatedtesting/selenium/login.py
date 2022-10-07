@@ -19,31 +19,35 @@ def login (driver, user, password):
     
 
 def add_items(driver):
-    products = driver.find_element(by=By.CSS_SELECTOR, value='#inventory_container > div').find_elements(by=By.TAG_NAME, value='button')
+    products = driver.find_element(by=By.CSS_SELECTOR, value='#inventory_container > div').find_elements(by=By.CLASS_NAME, value='inventory_item')
     for product in products:
-        product.click()
+        button_add = product.find_element(by=By.TAG_NAME, value='button')
+        button_add.click()
+        item_name = product.find_element(by=By.CLASS_NAME, value='inventory_item_name').text
+        print(item_name, 'added to shopping cart.')
         time.sleep(1)
 
 
 def remove_items(driver):
-    products = driver.find_element(by=By.CSS_SELECTOR, value='#inventory_container > div').find_elements(by=By.TAG_NAME, value='button')
+    products = driver.find_element(by=By.CSS_SELECTOR, value='#inventory_container > div').find_elements(by=By.CLASS_NAME, value='inventory_item')
     for product in products:
-        product.click()
+        button_add = product.find_element(by=By.TAG_NAME, value='button')
+        button_add.click()
+        item_name = product.find_element(by=By.CLASS_NAME, value='inventory_item_name').text
+        print(item_name, 'removed to shopping cart.')
         time.sleep(1)
         
 
 def get_number_items_in_cart(driver):
     cart = driver.find_element(by=By.ID, value='shopping_cart_container')
     number_items = int(cart.text) if cart.text != '' else 0
-    print('Number of items in cart', number_items)
+    print('Number of items in shopping cart is', number_items)
     return number_items
     
 
 if __name__=="__main__":
     options = ChromeOptions()
-    options.add_argument("--headless")
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--headless") 
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     # driver = webdriver.Chrome(service=service)
@@ -58,15 +62,18 @@ if __name__=="__main__":
     add_items(driver)
     number_items = get_number_items_in_cart(driver)
     if number_items == 6:
-        print("We added all items into cart successfully!")
+        print("We added all items into shopping cart successfully!")
     else:
-        print("Failed to add all item into cart!")
+        print("Failed to add all item into shopping cart!")
     
     # remove all item from cart
     remove_items(driver)
     number_items = get_number_items_in_cart(driver)
     if number_items == 0:
-        print("We removed all items from cart successfully!")
+        print("We removed all items from shopping cart successfully!")
     else:
-        print("Failed to remove all items from cart!")
+        print("Failed to remove all items from shopping cart!")
     
+
+
+# login('standard_user', 'secret_sauce')
