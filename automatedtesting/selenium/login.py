@@ -41,7 +41,9 @@ def get_number_items_in_cart(driver):
 
 if __name__=="__main__":
     options = ChromeOptions()
-    options.add_argument("--headless") 
+    options.add_argument("--headless")
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
     # driver = webdriver.Chrome(service=service)
