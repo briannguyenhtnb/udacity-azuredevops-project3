@@ -249,7 +249,7 @@ stages:
                 unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
-                source ~/.selenium-venv
+                source ~/.selenium-venv/bin/activate
                 sudo python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
