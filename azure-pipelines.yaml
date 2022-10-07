@@ -223,37 +223,37 @@ stages:
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
   # ToDo: 
-  - deployment: VMDeploy
-    displayName: Selenium Tests
-    environment:
-      name: 'TEST'
-      resourceType: VirtualMachine
-      tags: selenium
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop-uitests     # ToDo: Change/provide a name
+  # - deployment: VMDeploy
+  #   displayName: Selenium Tests
+  #   environment:
+  #     name: 'TEST'
+  #     resourceType: VirtualMachine
+  #     tags: selenium
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - download: current
+  #           artifact: drop-uitests     # ToDo: Change/provide a name
             
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |           
-                # sudo apt-get upgrade -y
-                # sudo apt-get install python3-pip -y
-                # sudo apt-get install unzip -y
-                # sudo apt-get install -y chromium-browser
-                # pip3 install selenium
+  #         - task: Bash@3
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |           
+  #               # sudo apt-get upgrade -y
+  #               # sudo apt-get install python3-pip -y
+  #               # sudo apt-get install unzip -y
+  #               # sudo apt-get install -y chromium-browser
+  #               # pip3 install selenium
 
-                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
-                sudo mkdir -p /var/log/selenium
-                sudo chmod 664 /var/log/selenium
-                source ~/.selenium-venv/bin/activate
-                python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
-                cd $(System.DefaultWorkingDirectory)
-                mkdir -p log/selenium
-                pwd
-                sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
-                ls -la
+  #               unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
+  #               sudo mkdir -p /var/log/selenium
+  #               sudo chmod 664 /var/log/selenium
+  #               source ~/.selenium-venv/bin/activate
+  #               python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
+  #               cd $(System.DefaultWorkingDirectory)
+  #               mkdir -p log/selenium
+  #               pwd
+  #               sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+  #               ls -la
                 
