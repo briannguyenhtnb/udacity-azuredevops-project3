@@ -197,9 +197,9 @@ stages:
               appType: webApp
               package: '$(Pipeline.Workspace)/drop-fakerestapi/fakerestapi-$(Build.BuildId).zip'   # ToDo: Use the published zip artifact. 
           #--------------------------------------------#    
-#           # Run JMeter test suite against the App Service
-#           # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
-#           # ToDo: Generate the log file. 
+          # Run JMeter test suite against the App Service
+          # ToDo: Update the script below to install jmeter, unzip the jmeter test suite published zip artifact, and run the PerformanceTestSuite.  
+          # ToDo: Generate the log file. 
           - task: Bash@3
             displayName: 'Performance Test with JMeter'
             inputs:
@@ -218,7 +218,7 @@ stages:
                                    -l log/jmeter/endurance-test-result.csv \
                                    -e -f -o log/jmeter/endurance-test-html-report \
                                    -j log/jmeter/jmeter-endurance-test.log
-              # workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests        # ToDo: Use the artifact name from the task above
+              workingDirectory: $(Pipeline.Workspace)/drop-jmeter-tests        # ToDo: Use the artifact name from the task above
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
