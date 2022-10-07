@@ -95,6 +95,9 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
+  - job: IntegrationTest
+    displayName: Integration Tests
+    steps:
     - task: CmdLine@2
       displayName: Install Newman
       inputs:
@@ -129,6 +132,9 @@ stages:
     #--------------------------------------------#
     # Selenium (UI) Test Suite - Archive the package  
     # "ArchiveFiles@2" picks up the web package and archives it.
+  - job: BuildArtifact
+    displayName: Build Artifacts
+    steps:
     - task: ArchiveFiles@2
       displayName: 'Archive UI Tests'
       inputs:
