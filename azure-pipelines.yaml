@@ -240,17 +240,17 @@ stages:
             inputs:
               targetType: 'inline'
               script: |           
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                pip3 install selenium
+                # sudo apt-get upgrade -y
+                # sudo apt-get install python3-pip -y
+                # sudo apt-get install unzip -y
+                # sudo apt-get install -y chromium-browser
+                # pip3 install selenium
 
                 unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
-                
-                sudo python3 -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
+                source ~/.selenium-venv
+                sudo python -u login.py | sudo tee -a /var/log/selenium/selenium-test.log
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
                 pwd
